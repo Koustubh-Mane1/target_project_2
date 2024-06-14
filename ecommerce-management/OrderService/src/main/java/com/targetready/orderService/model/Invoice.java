@@ -1,56 +1,30 @@
 package com.targetready.orderService.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+@Entity
 @Table(name = "orders")
 public class Invoice {
      @Id
-    @Column(name = "orderId")
+    @Column(name = "order_id")
     private String orderId;
+
     @Column(name = "amount")
     private double amount;
-    @Column(name = "transactionId")
+
+    @Column(name = "transaction_id")
     private String transactionId;
+
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
+
     @Column(name = "bank")
     private String bank;
-
-
-    public String getBank() {
-        return bank;
-    }
-
-    public void setBank(String bank) {
-        this.bank = bank;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 }
