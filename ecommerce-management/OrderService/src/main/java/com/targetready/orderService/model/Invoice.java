@@ -12,19 +12,20 @@ import lombok.Setter;
 @Entity
 @Table(name = "orders")
 public class Invoice {
-     @Id
-    @Column(name = "order_id")
+    @Id
     private String orderId;
 
-    @Column(name = "amount")
     private double amount;
 
-    @Column(name = "transaction_id")
     private String transactionId;
 
-    @Column(name = "status")
     private Boolean status;
 
-    @Column(name = "bank")
     private String bank;
+
+    private String productId;
+
+    private Long  quantity;
+
+
 }

@@ -1,12 +1,5 @@
 package com.targetready.bankService.runner;
 
-import com.targetready.orderService.model.Invoice;
-import com.targetready.bankService.service.InvoiceService;
-import com.targetready.bankService.service.DatabaseConnectionTestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
 //@Component
 //public class TestRunner implements CommandLineRunner {
 

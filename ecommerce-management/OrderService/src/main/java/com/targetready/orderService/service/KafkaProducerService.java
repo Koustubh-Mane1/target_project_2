@@ -56,7 +56,7 @@ public class KafkaProducerService {
         if(order.getAmount()<0) {
             throw new IllegalArgumentException("Price should be greater than 0");
         }
-        if(order.getStock()<=0) {
+        if(order.getQuantity()<=0) {
             throw new IllegalArgumentException("Product is out of Stock");
         }
     }

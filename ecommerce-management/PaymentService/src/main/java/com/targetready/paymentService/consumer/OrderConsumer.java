@@ -20,7 +20,10 @@ public class OrderConsumer {
         payment.setOrderId(order.getOrderId());
         payment.setAmount(order.getAmount());
         payment.setBank(order.getBank());
+        payment.setProductId(order.getProductId());
+        payment.setQuantity(order.getQuantity());
         payment.setTransactionId(transactionIdGenerator.generateTransactionId());
+
 
         paymentProducer.sendPayment(payment);
     }

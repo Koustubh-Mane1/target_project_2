@@ -1,19 +1,15 @@
-package com.targetready.orderService.model;
+package com.targetready.orderService.dto;
+
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class Payment {
+@Setter
+public class OrderDTO {
     private String orderId;
-
     private double amount;
-
-    private String transactionId;
-
     private String bank;
-
     private String productId;
-
-    private Long  quantity;
+    private Long quantity;
 }
+

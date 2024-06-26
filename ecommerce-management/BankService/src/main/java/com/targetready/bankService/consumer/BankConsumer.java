@@ -1,6 +1,8 @@
 package com.targetready.bankService.consumer;
 
 import com.targetready.bankService.service.InvoiceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.targetready.orderService.model.Invoice;
 import com.targetready.orderService.model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.targetready.bankService.producer.BankProducer;
 @Service
 public class BankConsumer {
-
+    private static final Logger logger = LoggerFactory.getLogger(BankConsumer.class);
    private  Invoice invoice;
     @Autowired
     private  BankProducer bankProducer;
@@ -22,20 +24,29 @@ public class BankConsumer {
 
     @KafkaListener(topics = "payments", groupId = "payment-group")
     public void consume(Payment payment) {
+        logger.info("Received payment: {}", payment);
+        try {
+            invoice = new Invoice();
+            invoice.setOrderId(payment.getOrderId());
+            invoice.setAmount(payment.getAmount());
+            invoice.setTransactionId(payment.getTransactionId());
+            invoice.setStatus(true);
+            invoice.setBank(payment.getBank());
+            invoice.setProductId(payment.getProductId());
+            invoice.setQuantity(payment.getQuantity());
 
-        invoice = new Invoice();
-        invoice.setOrderId(payment.getOrderId());
-        invoice.setAmount(payment.getAmount());
-        invoice.setTransactionId(payment.getTransactionId());
-        invoice.setStatus(true);
-        invoice.setBank(payment.getBank());
+//            logger.info("Saving invoice: {}", invoice);
+            invoiceService.saveInvoice(invoice);
+//            logger.info("Invoice saved: {}", invoice);
+//
+//            logger.info("Sending invoice to producer: {}", invoice);
+            bankProducer.sendInvoice(invoice);
+            logger.info("Invoice sent to producer: {}", invoice);
 
 
-        invoiceService.saveInvoice(invoice);
-
-        System.out.println("Invoice saved: " + invoice);
-
-        bankProducer.sendInvoice(invoice);
+        }catch (Exception e) {
+            logger.error("Error processing payment: {}", payment, e);
+        }
 
 
     }

@@ -41,6 +41,7 @@ public class BankProducer {
             }
             span.tag("success" , "Invoice Generated");
             kafkaTemplate.send("invoices",invoice);
+            System.out.println("Invoice saved: " + invoice);
         }
         catch (IllegalArgumentException e) {
             span.tag("error", e.getMessage());
