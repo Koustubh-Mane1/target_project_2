@@ -33,10 +33,15 @@ public class InventoryService {
         return inventoryMapper.toInventoryDTO(savedInventory);
     }
 
-    public InventoryDTO updateInventory(String productId, InventoryDTO inventoryDTO) {
+    public InventoryDTO updateInventory(String productId, int quantity_ordered) {
         Inventory inventory = inventoryRepository.findByProductId(productId);
+
         if (inventory != null) {
-            inventory.setQuantity(inventoryDTO.getQuantity());
+            int quantity_stored=inventory.getQuantity();
+            if (quantity_stored < quantity_ordered) {
+                throw new IllegalArgumentException("Insufficient quantity in inventory");
+            }
+            inventory.setQuantity(quantity_stored-quantity_ordered);
             Inventory updatedInventory = inventoryRepository.save(inventory);
             return inventoryMapper.toInventoryDTO(updatedInventory);
         }
