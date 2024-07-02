@@ -1,10 +1,12 @@
 package com.targetready.orderService.controller;
 
 
-import com.targetready.orderService.model.Order;
+import com.targetready.orderService.dto.InvoiceDTO;
+import com.targetready.orderService.dto.OrderDTO;
 import com.targetready.orderService.service.KafkaProducerService;
-import com.targetready.orderService.service.UserService;
+import com.targetready.orderService.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +19,33 @@ public class OrderController {
     @Autowired
     private KafkaProducerService kafkaProducerService;
 
+
     @Autowired
-    private UserService userService;
+    private OrderService orderService;
+
+
 
     @PostMapping("/orders")
-    public ResponseEntity<String> createOrder(@RequestBody Order order) {
-        kafkaProducerService.sendOrder(order);
-        return ResponseEntity.ok("Order sent to Kafka topic");
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
+        OrderDTO createdOrder = orderService.createOrder(orderDTO);
+        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    }
+    @GetMapping("/all-orders")
+    public ResponseEntity<List<InvoiceDTO>> getAllOrders() {
+        System.out.println("Getting Order Invoices");
+        List<InvoiceDTO> invoices = orderService.getAllOrders();
+        return new ResponseEntity<>(invoices, HttpStatus.OK);
+
     }
 
-    @GetMapping("/all-orders")
-    public List<Order> getUser() {
-        System.out.println("Getting Orders");
-        return this.userService.getOrders();
-    }
+
+
+
+
+
+
+
+
+
 }
 
