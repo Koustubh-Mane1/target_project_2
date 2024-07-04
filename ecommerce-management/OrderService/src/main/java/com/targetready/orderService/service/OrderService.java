@@ -5,6 +5,7 @@ import brave.Tracing;
 import brave.kafka.clients.KafkaTracing;
 import com.targetready.orderService.dto.InvoiceDTO;
 import com.targetready.orderService.dto.OrderDTO;
+import com.targetready.orderService.helper.OrderIdGenerator;
 import com.targetready.orderService.mapper.InvoiceMapper;
 import com.targetready.orderService.mapper.OrderMapper;
 import com.targetready.orderService.model.Order;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.targetready.orderService.helper.OrderIdGenerator.generateTransactionId;
 
 @Service
 public class OrderService {
@@ -48,8 +51,8 @@ public class OrderService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
 
-
     public OrderDTO createOrder(OrderDTO orderDTO){
+        orderDTO.setOrderId(generateTransactionId());
         Order order = orderMapper.toEntity(orderDTO);
         sendOrder(order);
         return orderMapper.toDto(order);

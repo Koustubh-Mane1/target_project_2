@@ -25,10 +25,9 @@ public class InventoryConsumer {
         try {
 
             JsonNode jsonNode = objectMapper.readTree(record.value());
-            JsonNode payloadNode = jsonNode.get("payload");
-            String productId = payloadNode.get("product_id").asText();
-            int quantity_ordered = payloadNode.get("quantity").asInt();
-            System.out.println(payloadNode.toPrettyString());
+            String productId = jsonNode.get("product_id").asText();
+            int quantity_ordered = jsonNode.get("quantity").asInt();
+            System.out.println(jsonNode.toPrettyString());
             System.out.println(productId + quantity_ordered);
             inventoryService.updateInventory(productId,quantity_ordered);
 
